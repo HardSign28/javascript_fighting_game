@@ -6,18 +6,34 @@ canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
 
-const gravity = 0.2;
+const gravity = 0.7;
 
 class Sprite {
-	constructor({position, velocity}) {
+	constructor({position, velocity, color = 'red'}) {
 		this.position = position;
 		this.velocity = velocity;
 		this.height = 150;
+		this.lastKey = undefined;
+		this.attackBox = {
+			position: this.position,
+			width: 100,
+			height: 50,
+		};
+		this.color = color;
 	}
 
 	draw() {
 		c.fillStyle = 'red';
 		c.fillRect(this.position.x, this.position.y, 50, this.height);
+
+		// attackBox
+		c.fillStyle = 'green';
+		c.fillRect(
+			this.attackBox.position.x,
+			this.attackBox.position.y,
+			this.attackBox.width,
+			this.attackBox.height
+		);
 	}
 
 	update() {
@@ -56,6 +72,8 @@ const enemy = new Sprite({
 		x: 0,
 		y: 0,
 	},
+
+	color: 'blue',
 });
 
 const keys = {
@@ -65,11 +83,24 @@ const keys = {
 
 	d: {
 		pressed: false,
-	}
+	},
+
+	w: {
+		pressed: false,
+	},
+
+	ArrowRight: {
+		pressed: false,
+	},
+
+	ArrowLeft: {
+		pressed: false,
+	},
 }
 
-let lastKey;
+const rectangularCollision = () => {
 
+}
 const animate = () => {
 	window.requestAnimationFrame(animate);
 	c.fillStyle = 'black';
@@ -78,12 +109,21 @@ const animate = () => {
 	enemy.update();
 
 	player.velocity.x = 0;
+	enemy.velocity.x = 0;
 
-	if (keys.a.pressed && lastKey === 'a') {
-		player.velocity.x = -1;
-	} else if (keys.d.pressed && lastKey === 'd') {
-		player.velocity.x = 1;
+	if (keys.a.pressed && player.lastKey === 'a') {
+		player.velocity.x = -5;
+	} else if (keys.d.pressed && player.lastKey === 'd') {
+		player.velocity.x = 5;
 	}
+
+	if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
+		enemy.velocity.x = -5;
+	} else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
+		enemy.velocity.x = 5;
+	}
+
+	// detect for collision
 
 }
 
@@ -95,11 +135,25 @@ window.addEventListener('keydown', (event) => {
 	switch (event.key) {
 		case 'd':
 			keys.d.pressed = true;
-			lastKey = 'd';
+			player.lastKey = 'd';
 			break;
-		case  'a':
+		case 'a':
 			keys.a.pressed = true;
-			lastKey = 'a';
+			player.lastKey = 'a';
+			break;
+		case 'w':
+			player.velocity.y = -20;
+			break;
+		case 'ArrowRight':
+			keys.ArrowRight.pressed = true;
+			enemy.lastKey = 'ArrowRight';
+			break;
+		case 'ArrowLeft':
+			keys.ArrowLeft.pressed = true;
+			enemy.lastKey = 'ArrowLeft';
+			break;
+		case 'ArrowUp':
+			enemy.velocity.y = -20;
 			break;
 	}
 });
@@ -111,6 +165,12 @@ window.addEventListener('keyup', (event) => {
 			break;
 		case  'a':
 			keys.a.pressed = false;
+			break;
+		case 'ArrowRight':
+			keys.ArrowRight.pressed = false;
+			break;
+		case  'ArrowLeft':
+			keys.ArrowLeft.pressed = false;
 			break;
 	}
 });
