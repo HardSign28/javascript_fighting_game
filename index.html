@@ -46,6 +46,9 @@
 			width: 100px;
 			height: 100px;
 			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	</style>
 </head>
@@ -55,7 +58,7 @@
 		<div class="healthBar__player">
 			<div id="playerHealth" class="healthBar__progress"></div>
 		</div>
-		<div class="roundTimer"></div>
+		<div id="timer" class="roundTimer">10</div>
 		<div class="healthBar__enemy">
 			<div id="enemyHealth" class="healthBar__progress"></div>
 		</div>

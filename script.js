@@ -141,6 +141,19 @@ const rectangularCollision = ({ rectangle1, rectangle2 }) => {
 			rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
 	)
 }
+
+let timer = 10;
+const decreaseTimer = () => {
+	setTimeout(decreaseTimer, 1000)
+	if (timer > 0) {
+		timer -= 1;
+		document.querySelector('#timer').innerHTML = timer;
+		console.log('timer', timer)
+	}
+	console.log('timer', timer)
+}
+
+// decreaseTimer(10);
 const animate = () => {
 	window.requestAnimationFrame(animate);
 	c.fillStyle = 'black';
