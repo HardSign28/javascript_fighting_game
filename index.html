@@ -3,14 +3,62 @@
 <head>
 	<meta charset="UTF-8">
 	<title>JavaScript Fighting Game Tutorial with HTML Canvas</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		.wrapper {
+			position: relative;
+			display: inline-flex;
+		}
+		.healthBar {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			width: 100%;
+			padding: 20px;
+		}
 
+		.healthBar__progress {
+			height: 100%;
+			width: 100%;
+			background: blue;
+		}
+		.healthBar__player,
+		.healthBar__enemy {
+			background: yellow;
+			height: 30px;
+			flex-grow: 1;
+			flex-basis: 100%;
+			display: flex;
+		}
+
+		.healthBar__player {
+			justify-content: flex-end;
+		}
+
+		.healthBar__enemy {
+
+		}
+
+		.roundTimer {
+			background: red;
+			width: 100px;
+			height: 100px;
+			flex-shrink: 0;
+		}
+	</style>
 </head>
 <body>
-<div>
-	<div>
-		<div></div>
-		<div></div>
-		<div></div>
+<div class="wrapper">
+	<div class="healthBar">
+		<div class="healthBar__player">
+			<div id="playerHealth" class="healthBar__progress"></div>
+		</div>
+		<div class="roundTimer"></div>
+		<div class="healthBar__enemy">
+			<div id="enemyHealth" class="healthBar__progress"></div>
+		</div>
 	</div>
 	<canvas></canvas>
 </div>
