@@ -7,6 +7,9 @@ canvas.height = 576;
 c.fillRect(0, 0, canvas.width, canvas.height);
 
 const gravity = 0.7;
+const roundTime = 60;
+
+let timerId;
 
 class Sprite {
 	constructor({ position, velocity, color = 'red', offset }) {
@@ -142,18 +145,33 @@ const rectangularCollision = ({ rectangle1, rectangle2 }) => {
 	)
 }
 
-let timer = 10;
-const decreaseTimer = () => {
-	setTimeout(decreaseTimer, 1000)
-	if (timer > 0) {
-		timer -= 1;
+const determineWinner = ({ player, enemy }) => {
+	clearTimeout(timerId);
+	if (player.health === enemy.health) {
+		document.querySelector('#displayText').innerHTML = 'Ничья!';
+	} else if (player.health > enemy.health) {
+		document.querySelector('#displayText').innerHTML = 'Выиграл Player 1!';
+	} else {
+		document.querySelector('#displayText').innerHTML = 'Выиграл Player 2!';
+	}
+	document.querySelector('#displayText').style.display = 'flex';
+}
+const decreaseTimer = (timer) => {
+	if (timer === 0) {
+		determineWinner({ player, enemy });
+	}
+
+	if (timer >= 0) {
+		timerId = setTimeout(() => {
+			decreaseTimer(timer)
+		}, 1000);
 		document.querySelector('#timer').innerHTML = timer;
 		console.log('timer', timer)
+		timer -= 1;
 	}
-	console.log('timer', timer)
 }
 
-// decreaseTimer(10);
+decreaseTimer(roundTime);
 const animate = () => {
 	window.requestAnimationFrame(animate);
 	c.fillStyle = 'black';
@@ -193,6 +211,11 @@ const animate = () => {
 		enemy.isAttacking = false;
 		player.health -= 20;
 		document.querySelector('#playerHealth').style.width = `${player.health}%`;
+	}
+
+	// end game based on health
+	if (player.health <= 0 || enemy.health <=0) {
+		determineWinner({ player, enemy });
 	}
 
 }
