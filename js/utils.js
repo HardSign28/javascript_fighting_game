@@ -28,7 +28,7 @@ const decreaseTimer = (timer) => {
 			decreaseTimer(timer)
 		}, 1000);
 		document.querySelector('#timer').innerHTML = timer;
-		console.log('timer', timer)
+		// console.log('timer', timer)
 		timer -= 1;
 	}
 }
