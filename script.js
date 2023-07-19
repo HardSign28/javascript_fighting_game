@@ -42,7 +42,7 @@ const player = new Fighter({
 		y: 10,
 	},
 
-	// imageSrc: './img/samuraiMack/Idle.png',
+	imageSrc: './img/samuraiMack/Idle.png',
 	framesMax: 8,
 	scale: 2.5,
 	offset: {
@@ -64,6 +64,17 @@ const player = new Fighter({
 			imageSrc: './img/samuraiMack/Jump.png',
 			framesMax: 2,
 		},
+
+		fall: {
+			imageSrc: './img/samuraiMack/Fall.png',
+			framesMax: 2,
+		},
+
+		attack1: {
+			imageSrc: './img/samuraiMack/Attack1.png',
+			framesMax: 6,
+		}
+
 	}
 });
 
@@ -78,12 +89,39 @@ const enemy = new Fighter({
 		y: 0,
 	},
 
+	imageSrc: './img/kenji/Idle.png',
+	framesMax: 4,
+	scale: 2.5,
 	offset: {
-		x: -50,
-		y: 0,
+		x: 215,
+		y: 167,
 	},
+	sprites: {
+		idle: {
+			imageSrc: './img/kenji/Idle.png',
+			framesMax: 4,
+		},
 
-	color: 'blue',
+		run: {
+			imageSrc: './img/kenji/Run.png',
+			framesMax: 8,
+		},
+
+		jump: {
+			imageSrc: './img/kenji/Jump.png',
+			framesMax: 2,
+		},
+
+		fall: {
+			imageSrc: './img/kenji/Fall.png',
+			framesMax: 2,
+		},
+
+		attack1: {
+			imageSrc: './img/kenji/Attack1.png',
+			framesMax: 4,
+		}
+	}
 });
 
 const keys = {
@@ -119,29 +157,45 @@ const animate = () => {
 	background.update();
 	shop.update();
 	player.update();
-	// enemy.update();
+	enemy.update();
 
 	player.velocity.x = 0;
 	enemy.velocity.x = 0;
 
-	player.switchSprite('idle');
-
+	// player movement
 	if (keys.a.pressed && player.lastKey === 'a') {
 		player.velocity.x = -5;
 		player.switchSprite('run');
 	} else if (keys.d.pressed && player.lastKey === 'd') {
 		player.velocity.x = 5;
 		player.switchSprite('run');
+	} else {
+		player.switchSprite('idle');
 	}
 
+	// jumping
 	if (player.velocity.y < 0) {
 		player.switchSprite('jump');
+	} else if (player.velocity.y > 0) {
+		player.switchSprite('fall');
 	}
 
+	// Enemy movement
 	if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
 		enemy.velocity.x = -5;
+		enemy.switchSprite('run');
 	} else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
 		enemy.velocity.x = 5;
+		enemy.switchSprite('run');
+	} else {
+		enemy.switchSprite('idle');
+	}
+
+	// enemy jumping
+	if (enemy.velocity.y < 0) {
+		enemy.switchSprite('jump');
+	} else if (enemy.velocity.y > 0) {
+		enemy.switchSprite('fall');
 	}
 
 	// detect for collision
