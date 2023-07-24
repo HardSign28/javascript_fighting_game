@@ -54,6 +54,7 @@ class Fighter extends Sprite {
 		framesMax = 1,
 		offset = {x: 0, y: 0},
 		sprites,
+		attackBox = { offset: {}, width: undefined, height: undefined	}
 	}) {
 		super({
 			position,
@@ -72,10 +73,10 @@ class Fighter extends Sprite {
 				x: this.position.x,
 				y: this.position.y,
 			},
+			offset: attackBox.offset,
+			width: attackBox.width,
+			height: attackBox.height,
 
-			width: 100,
-			height: 50,
-			offset,
 		};
 		this.color = color;
 		this.isAttacking = false;
@@ -96,11 +97,14 @@ class Fighter extends Sprite {
 	update() {
 		this.draw();
 		this.animateFrames();
+		this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+		this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
+
+		// draw the attack box
+		// c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
 
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
-		this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-		this.attackBox.position.y = this.position.y;
 
 		// gravity function
 		if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
@@ -114,9 +118,6 @@ class Fighter extends Sprite {
 	attack() {
 		this.switchSprite('attack1');
 		this.isAttacking = true;
-		setTimeout(() => {
-			this.isAttacking = false
-		}, 100);
 	}
 
 	switchSprite(sprite) {
