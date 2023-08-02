@@ -75,8 +75,8 @@ const player = new Fighter({
 			framesMax: 6,
 		},
 		takeHit: {
-			imageSrc: '',
-			framesMax: 3
+			imageSrc: './img/samuraiMack/Take Hit - white silhouette.png',
+			framesMax: 4
 		},
 	},
 	attackBox: {
@@ -243,7 +243,7 @@ const animate = () => {
 		rectangle2: player
 	}) && enemy.isAttacking && enemy.framesCurrent === 2) {
 		enemy.isAttacking = false;
-		player.health -= 20;
+		player.takeHit();
 		document.querySelector('#playerHealth').style.width = `${player.health}%`;
 	}
 
