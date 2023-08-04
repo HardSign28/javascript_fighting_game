@@ -187,6 +187,8 @@ const animate = () => {
 	c.fillStyle = 'black';
 	c.fillRect(0, 0, canvas.width, canvas.height);
 	background.update();
+	c.fillStyle = 'rgba(255, 255, 255, .15)'; // Засветляет фон
+	c.fillRect(0, 0, canvas.width, canvas.height);
 	shop.update();
 	player.update();
 	enemy.update();
